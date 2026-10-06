@@ -8,6 +8,12 @@ from snownlp import SnowNLP
 from datetime import datetime, timezone
 
 from storage import save_record, get_history, init_db
+import os
+from dotenv import load_dotenv
+
+load_dotenv()                        # ← 读同目录下的 .env
+
+ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS").split(",")
 
 init_db()  # 初始化数据库
 
@@ -16,9 +22,10 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_methods=["GET", "POST"],
     allow_credentials=True,
+    allow_headers=["*"]
 
 )
 
